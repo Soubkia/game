@@ -1,0 +1,129 @@
+<html>
+<head>
+    <title>pixi.js example 1</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script src="/Users/AdilSoubki/Desktop/pixi.js/bin/pixi.js"></script>
+</head>
+<body>
+    <script>
+ 
+        // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0x66FF99);
+ 
+    // create a renderer instance.
+    var renderer = PIXI.autoDetectRenderer(400, 300);
+ 
+    // add the renderer view element to the DOM
+    document.body.appendChild(renderer.view);
+ 
+    requestAnimFrame( animate );
+ 
+    // create a texture from an image path
+    var texture = PIXI.Texture.fromImage("simple_test.png");
+    // create a new Sprite using the texture
+    var megaman = new PIXI.Sprite(texture);
+ 
+    // center the sprites anchor point
+    megaman.anchor.x = 0.5;
+    megaman.anchor.y = 0.5;
+ 
+    // move the sprite t the center of the screen
+    megaman.position.x = 200;
+    megaman.position.y = 150;
+ 
+    stage.addChild(megaman);
+
+//===================================================================//
+
+    var idle = PIXI.Texture.fromImage("simple_test.png");
+    var frame_1 = PIXI.Texture.fromImage("run/1.png");
+    var frame_2 = PIXI.Texture.fromImage("run/2.png");
+    var frame_3 = PIXI.Texture.fromImage("run/3.png");
+    var frame_4 = PIXI.Texture.fromImage("run/4.png");
+    var frame_5 = PIXI.Texture.fromImage("run/5.png");
+    var frame_6 = PIXI.Texture.fromImage("run/6.png");
+    var frame_7 = PIXI.Texture.fromImage("run/7.png");
+    var frame_8 = PIXI.Texture.fromImage("run/8.png");
+    var frame_9 = PIXI.Texture.fromImage("run/9.png");
+
+    var frames = [frame_1, frame_2, frame_3, frame_4, frame_5, frame_6, frame_7, frame_8, frame_9]
+
+    var run = new PIXI.MovieClip(frames);
+    run.position.x = 100;
+    run.position.y = 100;
+    run.anchor.x = 0;
+    run.anchor.y = 0;
+    run.animationSpeed = 0.3;
+    stage.addChild(run);
+    run.gotoAndPlay(0);
+
+    var dkeyisdown;
+    var akeyisdown;
+
+    var frame_count = 0;
+
+    document.onkeydown = function(e) {
+        e = window.event || e;
+        if (e.keyCode == 68) {
+            run_right();
+            dkeyisdown = true;
+        }
+        if (e.keyCode == 65) {
+            run_left();
+            akeyisdown = true;
+        }
+    }
+
+    document.onkeyup = function(e) {
+        e = window.event || e;
+        if (e.keyCode == 68) {
+            megaman.setTexture(idle);
+            frame_count = 0;
+            dkeyisdown = false;
+        }
+        if (e.keyCode == 65) {
+            megaman.setTexture(idle);
+            frame_count = 0;
+            akeyisdown = false;
+        }
+    }
+
+    function run_right() {
+        megaman.scale.x = 1;
+        megaman.position.x += 5;
+        megaman.setTexture(frames[frame_count%9]);
+        frame_count++;
+    }
+
+    function run_left() {
+        megaman.scale.x = -1;
+        megaman.position.x -=5;
+        megaman.setTexture(frames[frame_count%9]);
+        frame_count++;
+    }
+
+    function animate() {
+ 
+        requestAnimFrame( animate );
+        
+        // just for fun, lets rotate mr rabbit a little
+        megaman.rotation += 0;
+
+        // render the stage   
+        renderer.render(stage);
+
+    //===========================================================//
+
+
+    }
+ 
+    </script>
+ 
+    </body>
+</html>
