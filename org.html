@@ -1,0 +1,174 @@
+<html>
+<head>
+    <title>pixi.js example 1</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script src="/Users/AdilSoubki/Desktop/pixi.js/bin/pixi.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+ 	var idle = PIXI.Texture.fromImage("simple_test.png");
+    var frame_1 = PIXI.Texture.fromImage("run/1.png");
+    var frame_2 = PIXI.Texture.fromImage("run/2.png");
+    var frame_3 = PIXI.Texture.fromImage("run/3.png");
+    var frame_4 = PIXI.Texture.fromImage("run/4.png");
+    var frame_5 = PIXI.Texture.fromImage("run/5.png");
+    var frame_6 = PIXI.Texture.fromImage("run/6.png");
+    var frame_7 = PIXI.Texture.fromImage("run/7.png");
+    var frame_8 = PIXI.Texture.fromImage("run/8.png");
+    var frame_9 = PIXI.Texture.fromImage("run/9.png");
+    var frames = [frame_1, frame_2, frame_3, frame_4, frame_5, frame_6, frame_7, frame_8, frame_9]
+    var run = new PIXI.MovieClip(frames);
+
+    var w_ = { 
+    	waspressed : false,
+    	isdown : false
+    }
+    var a_ = { 
+    	waspressed : false,
+    	isdown : false
+    }
+   	var s_ = { 
+   		waspressed : false,
+   		isdown : false
+   	}
+   	var d_ = { 
+   		waspressed : false,
+   		isdown : false
+   	}
+
+    var keyhandler = {
+    	w : w_,
+    	a : a_,
+    	s : a_,
+    	d : d_
+    }
+
+    document.onkeydown = function(e) {
+        e = window.event || e;
+        if (e.keyCode == 68 && keyhandler.d.isdown == false) {
+        	keyhandler.d.waspressed = true;
+        	megaman.start_run('right');
+        	
+        }
+        if (e.keyCode == 65 && keyhandler.a.isdown == false) {
+           	keyhandler.a.waspressed = true;
+           	megaman.start_run('left');
+        }
+    }
+
+    document.onkeyup = function(e) {
+        e = window.event || e;
+        if (e.keyCode == 68) {
+          	keyhandler.d.waspressed = false;
+          	keyhandler.d.isdown = false;
+          	megaman.start_idle('right');
+        }
+        if (e.keyCode == 65) {
+         	keyhandler.a.waspressed = false;
+         	keyhandler.a.isdown = false;
+         	megaman.start_idle('left');
+        }
+    }    
+    // Before removing children from the stage I need to write a function that checks if they are already on the stage
+	var megaman = {
+		idle : new PIXI.Sprite(idle),
+		run : new PIXI.MovieClip(frames),
+		start_run : function(direction) {
+			if (direction == 'left') {
+				megaman.run.scale.x = -1;
+			}
+			else {
+				megaman.run.scale.x = 1;
+			}
+			megaman.run.position.x = megaman.idle.position.x;
+    		megaman.run.position.y = megaman.idle.position.y;
+  			megaman.run.anchor.x = megaman.idle.anchor.x;
+	    	megaman.run.anchor.y = megaman.idle.anchor.y;
+	    	megaman.run.animationSpeed = 0.3;
+    		stage.addChild(megaman.run);
+    		megaman.run.gotoAndPlay(0);
+			stage.removeChild(megaman.idle)
+		},
+		start_idle: function(direction) {
+			if (direction == 'left') {
+				megaman.idle.scale.x = -1;
+			}
+			else {
+				megaman.idle.scale.x = 1;
+			}
+			megaman.run.position.x = megaman.idle.position.x;
+    		megaman.run.position.y = megaman.idle.position.y;
+  			megaman.run.anchor.x = megaman.idle.anchor.x;
+	    	megaman.run.anchor.y = megaman.idle.anchor.y;
+	    	stage.addChild(megaman.idle);
+	    	megaman.run.gotoAndStop(0);
+	    	stage.removeChild(megaman.run);
+		},
+		move : function(amount) {
+			megaman.run.position.x += amount;
+    		megaman.idle.position.x += amount;
+		}
+
+	}
+
+	requestAnimFrame( animate );
+
+	function animate() {
+ 
+        requestAnimFrame( animate );
+
+        if (keyhandler.d.waspressed == true) {
+        	megaman.move(2);
+        	keyhandler.d.waspressed = false;
+        	keyhandler.d.isdown = true;
+        }
+        
+        if (keyhandler.a.waspressed == true) {
+        	megaman.move(-2);
+        	keyhandler.a.waspressed = false;
+        	keyhandler.a.isdown = true;
+        }
+        
+           if (keyhandler.d.isdown == true && keyhandler.a.isdown == false) {
+        	megaman.move(2);
+        }
+        
+        if (keyhandler.a.isdown == true && keyhandler.d.isdown == false) {
+        	megaman.move(-2);
+        }
+        if (keyhandler.d.isdown == true && keyhandler.a.isdown == true) {
+        	megaman.idle();
+        }
+       
+        // render the stage   
+        renderer.render(stage);
+    }
+
+	// create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0x66FF99);
+ 
+    // create a renderer instance.
+    var renderer = PIXI.autoDetectRenderer(400, 300);
+ 
+    // add the renderer view element to the DOM
+    document.body.appendChild(renderer.view);
+
+    // center the sprites anchor point
+    megaman.idle.anchor.x = 0.5;
+    megaman.idle.anchor.y = 0.5;
+ 
+    // move the sprite t the center of the screen
+    megaman.idle.position.x = 200;
+    megaman.idle.position.y = 150;
+ 
+    stage.addChild(megaman.idle);
+
+	</script>
+</body>
+</html>

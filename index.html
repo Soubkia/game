@@ -13,7 +13,7 @@
 <body>
     <script>
  
-        // create an new instance of a pixi stage
+    // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0x66FF99);
  
     // create a renderer instance.
@@ -95,7 +95,7 @@
     }
 
     function run_right() {
-        megaman.scale.x = 1;
+        megaman.scale.x = 1; 
         megaman.position.x += 5;
         megaman.setTexture(frames[frame_count%9]);
         frame_count++;
@@ -107,6 +107,8 @@
         megaman.setTexture(frames[frame_count%9]);
         frame_count++;
     }
+
+    requestAnimFrame( animate );
 
     function animate() {
  
