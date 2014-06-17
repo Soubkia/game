@@ -67,12 +67,22 @@
         if (e.keyCode == 68) {
           	keyhandler.d.waspressed = false;
           	keyhandler.d.isdown = false;
-          	megaman.start_idle('right');
+            if (keyhandler.a.isdown == false) {
+                megaman.start_idle('right');
+            }
+            else {
+                megaman.start_run('left');
+            }
         }
         if (e.keyCode == 65) {
          	keyhandler.a.waspressed = false;
          	keyhandler.a.isdown = false;
-         	megaman.start_idle('left');
+            if (keyhandler.d.isdown == false) {
+                megaman.start_idle('left');
+            }
+            else {
+                megaman.start_run('right');
+            }
         }
     }    
     // Before removing children from the stage I need to write a function that checks if they are already on the stage
